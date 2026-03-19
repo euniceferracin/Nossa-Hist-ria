@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nossa História ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0f;
+    --surface: #161620;
+    --surface2: #1e1e2e;
+    --bubble-me: #a8192e;
+    --bubble-them: #252535;
+    --text: #f0eee9;
+    --text-muted: #8a8a9a;
+    --accent: #c4294a;
+    --gold: #d4a854;
+    --tick: #9fb0d8;
+    --name-me: #f4a0b0;
+    --name-them: #9db8e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── FLOATING HEARTS ── */
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .heart-float {
+    position: absolute; font-size: 1.1rem; opacity: 0;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+    10%  { opacity: 0.12; }
+    90%  { opacity: 0.06; }
+    100% { opacity: 0; transform: translateY(-100vh) rotate(15deg); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 60px 24px 48px; text-align: center;
+  }
+  .hero-badge {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+    background: rgba(212,168,84,0.1); border: 1px solid rgba(212,168,84,0.25);
+    padding: 6px 18px; border-radius: 100px; margin-bottom: 20px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 7vw, 4rem); font-weight: 700; line-height: 1.1;
+    animation: fadeDown 0.8s 0.15s ease both;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    margin-top: 16px; font-size: 0.92rem; color: var(--text-muted);
+    max-width: 340px; line-height: 1.65;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .hero-hearts { font-size: 1.6rem; margin-top: 20px; letter-spacing: 6px; animation: fadeDown 0.8s 0.45s ease both; }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CHAT WRAPPER ── */
+  .chat-wrapper {
+    position: relative; z-index: 1;
+    max-width: 480px; margin: 0 auto; padding: 0 16px 40px;
+  }
+
+  /* ── CHAPTER ── */
+  .chapter {
+    display: flex; align-items: center; gap: 12px;
+    margin: 40px 0 20px;
+  }
+  .chapter-line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+  .chapter-label {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;
+  }
+
+  /* ── DATE CHIP ── */
+  .date-chip { text-align: center; margin: 18px 0 10px; }
+  .date-chip span {
+    font-size: 0.7rem; color: #6a6a7a;
+    background: #181824; padding: 4px 14px; border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── MESSAGE ROW ── */
+  .msg-row { display: flex; flex-direction: column; margin: 6px 0; }
+  .msg-row.me  { align-items: flex-end; }
+  .msg-row.them { align-items: flex-start; }
+
+  .sender-name {
+    font-size: 0.65rem; font-weight: 500; letter-spacing: 0.04em;
+    margin-bottom: 3px; padding: 0 4px;
+  }
+  .msg-row.me .sender-name   { color: var(--name-me); }
+  .msg-row.them .sender-name { color: var(--name-them); }
+
+  .bubble {
+    max-width: 80%; padding: 9px 13px; border-radius: 16px;
+    font-size: 0.9rem; line-height: 1.55; word-break: break-word;
+  }
+  .msg-row.me .bubble {
+    background: var(--bubble-me); border-bottom-right-radius: 4px; color: #fff;
+  }
+  .msg-row.them .bubble {
+    background: var(--bubble-them); border-bottom-left-radius: 4px; color: var(--text);
+  }
+  .bubble.long-msg {
+    font-size: 0.86rem; line-height: 1.68;
+    background: linear-gradient(135deg, var(--bubble-them) 0%, #1e2040 100%);
+    border: 1px solid rgba(196,41,74,0.2);
+  }
+  .bubble em { font-style: italic; }
+
+  .bubble-meta {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 4px; margin-top: 4px;
+  }
+  .bubble-time { font-size: 0.63rem; opacity: 0.5; }
+  .bubble-tick { font-size: 0.63rem; color: var(--tick); }
+
+  /* ── THOUGHT BUBBLE ANNOTATION ── */
+  .thought-wrap {
+    display: flex; justify-content: center;
+    margin: 10px 0 4px; position: relative;
+  }
+  .thought-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.3rem; opacity: 0.5; transition: opacity 0.2s, transform 0.2s;
+    padding: 4px; border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .thought-btn:hover, .thought-btn.active { opacity: 1; transform: scale(1.15); }
+
+  .thought-bubble {
+    position: absolute; bottom: calc(100% + 8px);
+    left: 50%; transform: translateX(-50%) translateY(6px) scale(0.95);
+    background: #1e1e32; border: 1px solid rgba(212,168,84,0.3);
+    border-radius: 16px; padding: 10px 14px;
+    font-size: 0.78rem; color: var(--gold); font-style: italic;
+    white-space: nowrap; max-width: 280px; white-space: normal;
+    text-align: center; line-height: 1.5;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 10;
+    /* tail */
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  }
+  .thought-bubble::after {
+    content: '💭';
+    position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+    font-size: 0.9rem;
+  }
+  .thought-bubble.visible {
+    opacity: 1; transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  /* ── SILENCE BLOCK ── */
+  .silence-block {
+    text-align: center; margin: 32px 0; padding: 28px 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+  }
+  .silence-block .s-icon { font-size: 2rem; margin-bottom: 8px; }
+  .silence-block .s-title {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.05rem; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .silence-block .s-sub { font-size: 0.75rem; color: rgba(255,255,255,0.22); letter-spacing: 0.08em; }
+
+  /* ── FINAL MESSAGE ── */
+  .final-block {
+    margin: 36px 0 16px; padding: 24px 20px;
+    background: linear-gradient(135deg, rgba(164,25,46,0.15) 0%, rgba(30,30,48,0.85) 100%);
+    border: 1px solid rgba(196,41,74,0.3); border-radius: 20px;
+    position: relative; overflow: hidden;
+  }
+  .final-block::before {
+    content: '❤️'; position: absolute; font-size: 9rem;
+    opacity: 0.04; right: -20px; bottom: -20px; pointer-events: none;
+  }
+  .final-label {
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .final-label::before, .final-label::after {
+    content: ''; flex: 1; height: 1px; background: rgba(196,41,74,0.3);
+  }
+  .final-bubble {
+    background: var(--bubble-me); border-radius: 16px 16px 4px 16px;
+    padding: 14px 16px; font-size: 0.88rem; line-height: 1.7; color: #fff;
+  }
+
+  /* ── DLC ── */
+  .dlc-section { margin: 44px 0 20px; text-align: center; }
+  .dlc-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted); padding: 10px 22px; border-radius: 100px;
+    font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .dlc-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .dlc-content { display: none; margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.08); border-radius: 16px; }
+  .dlc-content.open { display: block; }
+  .dlc-header { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
+  .dlc-warning { font-size: 0.72rem; color: var(--text-muted); margin-top: 14px; font-style: italic; opacity: 0.55; }
+
+  /* ── FOOTER ── */
+  .footer { text-align: center; padding: 32px 16px 56px; position: relative; z-index: 1; }
+  .footer-hearts { font-size: 1.4rem; letter-spacing: 8px; margin-bottom: 10px; }
+  .footer-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.88rem; color: var(--text-muted); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ 1 ano e 5 meses ✦</div>
+  <h1 class="hero-title">Nossa <em>História</em><br>em Mensagens</h1>
+  <p class="hero-sub">Bodas de Mensagem — porque tudo entre nós dois sempre começou (e recomeçou) com palavras digitadas com o coração</p>
+  <div class="hero-hearts">❤️ ❤️ ❤️</div>
+</div>
+
+<div class="chat-wrapper">
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 1 — O INÍCIO
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ O Início ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>25 de agosto de 2022</span></div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)" title="Curiosidade">💭</button>
+  <div class="thought-bubble">Eu fui lá e mandei a primeira mensagem, sem hesitar kkkkk</div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Oiie<br>Td bemm?<br>Eh a Eunice do Educandário, vc eh o Lian msm neh?<br>Peguei seu num no grupo da sala akakakak
+    <div class="bubble-meta"><span class="bubble-time">22:19</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Você respondeu TUDO de uma vez às 22:22 ✨ Destino ou acidente?</div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Oioii<br>Tudo siim<br>E com vc?<br>Sou kkkkkkkkk<br>Kkkkkkkkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">22:22</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 2 — A APROXIMAÇÃO
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ A Aproximação ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>26 de agosto de 2022</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Eii to fazendo as unhas mas to mt indecisa kkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">19:57</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Escolhe uma cor p mim
+    <div class="bubble-meta"><span class="bubble-time">19:57</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Você escolheu vermelho 🔴 — e nesse momento percebeu que eu tava interessada né? kkk</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 3 — CAINDO DE AMORES
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ Caindo de Amores ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>6 de dezembro de 2022 · 00:26</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Eu te amo pra krlll
+    <div class="bubble-meta"><span class="bubble-time">00:26</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Do tamanho da galáxia
+    <div class="bubble-meta"><span class="bubble-time">00:26</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>25 de dezembro de 2022</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Nãoo<br>Vc é 10000000000000000000 de vezes mais linda doq qualquer pessoa no mundo
+    <div class="bubble-meta"><span class="bubble-time">19:57</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">E vc é 10000000000000000000 de vezes mais lindo doq qualquer pessoa do universo
+    <div class="bubble-meta"><span class="bubble-time">19:57</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">E vc é 10000000000000000000 de vezes mais linda doq qualquer ser de todo o multiverso ⭐
+    <div class="bubble-meta"><span class="bubble-time">21:53</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Ta isso aq me quebrou
+    <div class="bubble-meta"><span class="bubble-time">21:53</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Uma deusa<br>Te chamaria de afrodite<br>Mas afrodite é grega<br>E vc é brasileira 😤
+    <div class="bubble-meta"><span class="bubble-time">21:56</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Sou sua deusa brasileira? rs</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 4 — O SILÊNCIO
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ O Silêncio ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>16 de março de 2023</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Boom diaa
+    <div class="bubble-meta"><span class="bubble-time">06:20</span></div>
+  </div>
+</div>
+
+<div class="silence-block reveal">
+  <div class="s-icon">🌧️</div>
+  <div class="s-title">Um ano de silêncio</div>
+  <div class="s-sub">março 2023 — junho 2024</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 5 — O REENCONTRO
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ O Reencontro ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>23 de junho de 2024 · Aniversário dela 🎂</span></div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Você viu meu status "Finally, twenty ✨🎁" e foi lá. Uma mensagem mudou tudo.</div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Feliz aniversarioo 🥳🎉🥳
+    <div class="bubble-meta"><span class="bubble-time">14:18</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Obrigadaa 🥰
+    <div class="bubble-meta"><span class="bubble-time">14:21</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Quanto tempo ❤️
+    <div class="bubble-meta"><span class="bubble-time">14:23</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Mt tempo kkkk<br>Tenho q me desculpar da forma q te tratei da última vez
+    <div class="bubble-meta"><span class="bubble-time">14:25</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Ta tudo bemm nao precisa se desculpar, eu tmb sumi sem falar nada... tmb peço desculpa por isso
+    <div class="bubble-meta"><span class="bubble-time">14:28</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Tudo bem, vc teve motivos
+    <div class="bubble-meta"><span class="bubble-time">14:30</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Nós dois se desculpando ao mesmo tempo. Sempre foi assim — nós dois juntos. 🥹</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 6 — O NAMORO COMEÇA
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ O Namoro Começa ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>19 de julho de 2024</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Eu sou chata kkkk eu me estresso com coisa boba, sou mt emotiva, faço bico as vzs kkkkkkk sou mt carente, sou grossa
+    <div class="bubble-meta"><span class="bubble-time">14:54</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Queria tanto ver essa Eunice kkkkkkkkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">14:54</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Curioso vc querer ver isso kkkkkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">14:54</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">É claro<br>Quero q vc seja minha mulher
+    <div class="bubble-meta"><span class="bubble-time">14:54</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>30 de julho de 2024</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Boom diaaa meu amor<br>Vida, vc tem uma bíblia perto de vc??
+    <div class="bubble-meta"><span class="bubble-time">08:30</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Se sim<br>Olha cântico dos cânticos 4:7 ⭐
+    <div class="bubble-meta"><span class="bubble-time">08:30</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">"Toda bela és tu, amada minha, e não há defeito em ti." — Ct 4:7 ✨</div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Bom diiiaaaa lindoo ❤️❤️<br>Ai mdsssss 🥹🥹🥹<br>Vc é demaissss mdss<br>Obrigadaaa meu lindooo 🥹🥹❤️<br>Acordei feliz demais com essa msg
+    <div class="bubble-meta"><span class="bubble-time">10:38</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>7 de agosto de 2024</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Se vc puder pode ter certeza q eu quero ligar todo dia kkkkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">18:34</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Se não puder podemos parar sem problema ok?<br>Vc é minha paz<br>Meu conforto<br>Minha felicidade<br>Eu preciso desses momentos com vc msm q seja curto ⭐
+    <div class="bubble-meta"><span class="bubble-time">18:34</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Ai mdsss q lindoooo amor 🥹🥹🥹<br>O mesmo pra vc amor, estar com vc falar com vc me faz mt feliz
+    <div class="bubble-meta"><span class="bubble-time">18:35</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Me apaixono cada dia mais por vc<br>Posso te dedicar uma música de desenho? 🎵
+    <div class="bubble-meta"><span class="bubble-time">18:42</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Foi aqui que eu mandei a música do Alvin e os esquilos KKKKK</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 7 — A DECLARAÇÃO
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ A Declaração ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>11 de agosto de 2024 · 07:29</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble long-msg">Só queria dizer o quão incrível vc é. Uma pessoa maravilhosa e carismática.<br><br>Desde a primeira vez q eu te vi eu me encantei por vc, e só deus sabe como eu fiquei mal e triste por termos parado de nos falar. O quanto eu sentia falta dos seus beijos e de vc, do ser humano q vc é.<br><br>Sempre tentando deixar os outros felizes e fazendo bem pra todo mundo. Eu tenho mt sorte de poder ter novamente essa chance.<br><br>Não quero parecer emocionado maaas eu assino aqui q meu compromisso com vc vai ser até o ouro. Se entender entendeu 😌<br><br>Mas eu sou fascinado em vc, desde seu carisma, seu rosto, corpo, tudo. Cabelo, unhas, sobrancelha, boca, dedos, cada estria e celulite eu amo tudo em vc.<br><br>Eu sou mt feliz e grato em poder falar q vc é minha. Minha mulher. E eu n vou perder a aposta kkkkkk mas vc sabe oq viria aq ❤️
+    <div class="bubble-meta"><span class="bubble-time">07:29</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble long-msg">Aaaa mdss 🥹 eu n tenho palavras pra descrever o quanto eu to emocionada de ler isso de vdd 🥹 vc é incrível demais, o homem dos meus sonhos, eu tenho fé q esse compromisso vai ser firmado.<br><br>Tmb amo tudo em vc, seu cabelo cacheadinho, seus olhos, seu sorriso, suas piadinhas kkkkkk, seu compromisso, tudo tudo tudo.<br><br>Eu espero de vdd q isso seja pra vida toda pq vc me completa e eu quero mt passar o resto da minha vida com vc meu amor.<br><br>Tmb n vou perder a aposta kkkkkkkkkkk mas vc sabe 👉😘
+    <div class="bubble-meta"><span class="bubble-time">10:53</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">A aposta: quem falasse "eu te amo" primeiro pagaria uma caixa de bombom. Os dois falaram juntos. Empataram. 🍫</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 8 — CRESCENDO JUNTOS
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ Crescendo Juntos ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>20 de setembro de 2024</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">N existe nem palavras pra descrever meu amor por ti ⭐
+    <div class="bubble-meta"><span class="bubble-time">11:34</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>8 de outubro de 2024</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">O motorista do ônibus gritou comigo na frente de todo mundo<br>To segurando pra n chorar
+    <div class="bubble-meta"><span class="bubble-time">06:51</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">E vc? Ta bem meu amor??
+    <div class="bubble-meta"><span class="bubble-time">06:51</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">N<br>Um filho da puta fez minha mulher chorar 
+    <div class="bubble-meta"><span class="bubble-time">06:54</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Sinto mt q existam umas merdas desse e eu n posso estar aí pra te proteger
+    <div class="bubble-meta"><span class="bubble-time">06:53</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Você sempre me protege em todos os sentidos, meu herói!</div>
+</div>
+
+<div class="date-chip reveal"><span>6 de novembro de 2024</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Em todos os momentos, quando eu to feliz quero vc pra estar comemorando cmg, quando eu to triste quero vc pra cuidar de mim, quando eu tenho um dia merda desses eu quero vc pra melhorar ele, quando to totalmente cansada de tudo quero vc pq vc é meu alívio, vc é meu porto seguro, minha vida toda ❤️
+    <div class="bubble-meta"><span class="bubble-time">21:58</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Eu te amo do fundo do meu coração ❤️
+    <div class="bubble-meta"><span class="bubble-time">21:46</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Eu também te amo do fundo da minha almaa ⭐
+    <div class="bubble-meta"><span class="bubble-time">21:46</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Amor mt obrigada por hoje de vdd<br>Eu amei demais ter vc<br>Ver vc<br>Ficar com vc aq em casa abracadinho e curtindo<br>Melhor coisa do mundo<br>Eu agradeço muito muito muito por vc meu amor<br>Vc é meu maior presente ⭐
+    <div class="bubble-meta"><span class="bubble-time">21:32</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">É a melhor coisa do mundo hehee<br>Eu também te amo do fundo da minha alma 
+    <div class="bubble-meta"><span class="bubble-time">22:45</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Vc é meu maior presente tchutchiquinha ⭐
+    <div class="bubble-meta"><span class="bubble-time">22:47</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>21 de novembro de 2024</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Meu aspirador de pó 🥰 ⭐
+    <div class="bubble-meta"><span class="bubble-time">22:43</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">I Wanna Be Yours Forever! ✨</div>
+</div>
+
+<div class="date-chip reveal"><span>5 de dezembro de 2024</span></div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Eu mandei uma foto com R$17 na conta. A sua resposta foi imediata 😤</div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Vc falou q só tinha 17 reais na conta<br>E mulher minha n vai ficar sem dinheiro 😤 ⭐
+    <div class="bubble-meta"><span class="bubble-time">10:17</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 9 — PROMESSAS
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ Promessas ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>12 de fevereiro de 2025</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Nao precisa preocupar eu só queria ser ouvida eu acho
+    <div class="bubble-meta"><span class="bubble-time">23:42</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Claro q preciso me preocupar<br>Vc é minha muié<br>Se tá te fazendo mal eu vou resolver isso ⭐
+    <div class="bubble-meta"><span class="bubble-time">23:42</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">E sempre q vc quiser pode falar meu amor<br>N precisa se segurar ❤️
+    <div class="bubble-meta"><span class="bubble-time">23:42</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Você sempre se esforça para o melhor pro nosso relacionamento e eu te admiro muito por isso meu amor!</div>
+</div>
+
+<div class="date-chip reveal"><span>17 de fevereiro de 2025</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Nao me deixa com esperança
+    <div class="bubble-meta"><span class="bubble-time">23:10</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">N tem pq vc n ter esperança<br>A gente vai se casar independente do tempo, vc só n sabe quanto tempo hehee
+    <div class="bubble-meta"><span class="bubble-time">23:10</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Vamos ter um noivado pam e o roy? Kkkkkkkkkk
+    <div class="bubble-meta"><span class="bubble-time">23:11</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">KKKKKKKKKKKKKKKK nãoo<br>Vai ser um noivado pam e jim
+    <div class="bubble-meta"><span class="bubble-time">23:11</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Vc ta me prometendo isso?
+    <div class="bubble-meta"><span class="bubble-time">23:14</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Tô te prometendo isso ⭐
+    <div class="bubble-meta"><span class="bubble-time">23:14</span></div>
+  </div>
+</div>
+
+<div class="thought-wrap reveal">
+  <button class="thought-btn" onclick="toggleThought(this)">💭</button>
+  <div class="thought-bubble">Um noivado pam e jim. Dois idiotas apaixonados. 😂❤️</div>
+</div>
+
+<div class="date-chip reveal"><span>8 de abril de 2025</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Imagina bb eu n fiz nada
+    <div class="bubble-meta"><span class="bubble-time">20:06</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Só de vc existir vc já faz mt coisa<br>Mt coisa boa<br>Vc é tipo a mulher maravilha<br>Sempre incentivando as pessoas a serem boas e melhores ⭐
+    <div class="bubble-meta"><span class="bubble-time">20:06</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Owntttt meu amorrr te amo tanto 😍🥹
+    <div class="bubble-meta"><span class="bubble-time">20:18</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>28 de abril de 2025</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Tá uma merda<br>Quero vc<br>Preciso de vc<br>Acho q eu tô obcecado por vc ⭐
+    <div class="bubble-meta"><span class="bubble-time">18:02</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Krlh q tesão nessa frase<br>Eu sou obcecada por vc tmb<br>Te quero a todo momento
+    <div class="bubble-meta"><span class="bubble-time">18:06</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>22 de maio de 2025</span></div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Quer recriar cena do seu livro? Rs ⭐
+    <div class="bubble-meta"><span class="bubble-time">16:22</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">queroooooo rs
+    <div class="bubble-meta"><span class="bubble-time">16:23</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Hehee<br>Vou te temperar pra sábado 😏
+    <div class="bubble-meta"><span class="bubble-time">16:27</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CAPÍTULO 10 — AMOR QUE TRANSBORDA
+══════════════════════════════════════ -->
+<div class="chapter reveal">
+  <div class="chapter-line"></div>
+  <div class="chapter-label">✦ Amor que Transborda ✦</div>
+  <div class="chapter-line"></div>
+</div>
+
+<div class="date-chip reveal"><span>19 de junho de 2025 · 01:48</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Quero te dar um pouco da felicidade q eu sinto em te ter<br>Ah se vc soubesse o quanto eu sou feliz com vc....
+    <div class="bubble-meta"><span class="bubble-time">01:46</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Vc é a pessoa da minha vida<br>Minha pessoa ❤️
+    <div class="bubble-meta"><span class="bubble-time">01:46</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Se vc soubesse o quanto <em>Eu te amo</em> ⭐
+    <div class="bubble-meta"><span class="bubble-time">01:48</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    <div class="bubble-meta"><span class="bubble-time">01:49</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>20 de julho de 2025 · 01:28</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Meu companheiro
+    <div class="bubble-meta"><span class="bubble-time">01:28</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Minha companheira<br>Minha parceira<br>Minha confidente<br>Minha amante<br>Meu porto seguro<br>Minha esposa<br>Meu tudo! ❤️ ⭐
+    <div class="bubble-meta"><span class="bubble-time">01:28</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Vc curou tudo dentro de mim<br>Eu te amo tanto q eu fico mt chorosa pensando<br>Quero tanto me casar com vc<br>Viver com vc<br>Ter nossos filhoa 🥹
+    <div class="bubble-meta"><span class="bubble-time">01:29</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Tudo q eu mais quero é casar com o amor da minha vida
+    <div class="bubble-meta"><span class="bubble-time">01:29</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Vc também meu amor<br>Vc me curou de coisas q eu nem sabia q precisavam de cura<br>Q precisavam ser cuidadas<br>Eu te amo mt!
+    <div class="bubble-meta"><span class="bubble-time">01:29</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>7 de agosto de 2025 · madrugada</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Eu te amaria até o fim do universo, se tivéssemos 22 min por dia pra tudo explodir eu passaria a eternidade em looping aproveitando cada segundo desse tempo com vc
+    <div class="bubble-meta"><span class="bubble-time">23:01</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Kkkkkkkk q fofurinha<br>Eu te amo pra krlllll<br>N tem como<br>Eu também te amaria pra todo o sempre meu amor
+    <div class="bubble-meta"><span class="bubble-time">23:02</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Se eu tivesse conhecido antes o vazio que sua ausência deixaria, teria amado você ainda mais. ⭐
+    <div class="bubble-meta"><span class="bubble-time">23:04</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">A dor da sua ausência é aguda e assustadora, e eu daria qualquer coisa para não senti-la; qualquer coisa, menos nunca ter te conhecido (o que seria pior). ⭐
+    <div class="bubble-meta"><span class="bubble-time">23:08</span></div>
+  </div>
+</div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">Que coisa mais linda mds 
+    <div class="bubble-meta"><span class="bubble-time">23:01</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="date-chip reveal"><span>14 de janeiro de 2026 · 22:27</span></div>
+
+<div class="msg-row me reveal">
+  <div class="sender-name">Eunice</div>
+  <div class="bubble">É TÃO bom te beijar
+    <div class="bubble-meta"><span class="bubble-time">22:27</span><span class="bubble-tick">✓✓</span></div>
+  </div>
+</div>
+
+<div class="msg-row them reveal">
+  <div class="sender-name">Lian</div>
+  <div class="bubble">Eu digo o msm<br>Uma das melhores experiências do mundo é te beijar rs ⭐
+    <div class="bubble-meta"><span class="bubble-time">22:27</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MENSAGEM FINAL
+══════════════════════════════════════ -->
+<div class="final-block reveal">
+  <div class="final-label">Hoje · 19 de março de 2026</div>
+  <div class="sender-name" style="color:var(--name-me);padding:0 2px 8px;font-size:0.65rem;font-weight:500;letter-spacing:0.04em;">Eunice</div>
+  <div class="final-bubble">
+    Amor, todos esses anos te conhecendo, desde a primeira mensagem eu já sabia que você era especial. Todas as nossas conversas com duplo sentido, nossas palhaçadas, nós nos emocionando juntos kkkkk<br><br>
+    Foi a melhor coisa do universo reencontrar você. Deus nos preparou e juntou mais uma vez pqq era pra ser nós dois, sempre foi nós dois!<br><br>
+    Desde então eu sou a pessoa mais feliz do mundo por tudo que você é na minha vida. Vc me trás paz, felicidade, me faz sentir amada e desejada, me protege e resolve os problemas que aparecem... vc é simplesmente tudo que eu sempre sonhei.<br><br>
+    Eu sou muito muito muito grata por você ter tido coragem de me mandar msg de novo e por termos nos reconectado desse jeito. Eu sou tão tão tão feliz com você amor!<br><br>
+    Nessa data, 1 ano e 5 meses do nosso namoro, as bodas de mensagem me deixaram muito emocionada de reler nossa história. São muuuuitas mensagens kkkk mas tudo com muito sentimento e emoção. Com certeza nós dois nos entregamos por inteiro desde o começo.<br><br>
+    As mensagens vão além de palavras digitadas, têm um enorme significado pra mim e eu vou sempre guardar comigo!<br><br>
+    Eu te amo infinito meu amor! E espero que em breve nossas mensagens sejam "Trás pão quando tiver voltando do trabalho" 🍞 "To no mercado quer alguma coisa?" 🛒 "Nosso filho tá com saudade de você" 🥹<br><br>
+    Tudo sobre uma vida juntos, morando juntos e crescendo juntos como nós dois sonhamos!<br><br>
+    <strong>Feliz aniversário de namoro meu amor! ❤️</strong>
+    <div class="bubble-meta">
+      <span class="bubble-time">hoje</span>
+      <span class="bubble-tick">✓✓</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DLC
+══════════════════════════════════════ -->
+<div class="dlc-section reveal">
+  <button class="dlc-btn" onclick="toggleDLC()">📦 DLC: Conteúdo +18</button>
+  <div class="dlc-content" id="dlcContent">
+    <div class="dlc-header">19 de fevereiro de 2026 — conteúdo desbloqueado 🔓</div>
+
+    <div class="msg-row me" style="margin:6px 0">
+      <div class="sender-name">Eunice</div>
+      <div class="bubble">Me come quando tiver com raiva<div class="bubble-meta"><span class="bubble-time">23:05</span><span class="bubble-tick">✓✓</span></div></div>
+    </div>
+	    <div class="msg-row them" style="margin:6px 0">
+      <div class="sender-name">Lian</div>
+      <div class="bubble">Vou te comer sempre rs<div class="bubble-meta"><span class="bubble-time">23:05</span></div></div>
+    </div>
+    <div class="msg-row them" style="margin:6px 0">
+      <div class="sender-name">Lian</div>
+      <div class="bubble">Quando estiver triste, raiva e principalmente quando estiver feliz<div class="bubble-meta"><span class="bubble-time">23:05</span></div></div>
+    </div>
+    <div class="msg-row them" style="margin:6px 0">
+      <div class="sender-name">Lian</div>
+      <div class="bubble">Pq independente disso te sentir sempre vai me deixar feliz<div class="bubble-meta"><span class="bubble-time">23:05</span></div></div>
+    </div>
+
+    <div class="dlc-warning">🔞 DLC disponível exclusivamente para maiores de 18 anos kkkkkk</div>
+  </div>
+</div>
+
+</div><!-- /chat-wrapper -->
+
+<div class="footer">
+  <div class="footer-hearts">❤️ ❤️ ❤️</div>
+  <div class="footer-text">feito com muito amor · 19.03.2026</div>
+</div>
+
+<script>
+// Floating hearts
+const hb = document.getElementById('heartsBg');
+const emojis = ['❤️','🩷','💕','💗','💖','✨','🌹'];
+for (let i = 0; i < 20; i++) {
+  const h = document.createElement('span');
+  h.className = 'heart-float';
+  h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  h.style.left = Math.random() * 100 + '%';
+  h.style.animationDuration = (14 + Math.random() * 18) + 's';
+  h.style.animationDelay = (Math.random() * 22) + 's';
+  h.style.fontSize = (0.7 + Math.random() * 0.9) + 'rem';
+  hb.appendChild(h);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Thought bubbles
+function toggleThought(btn) {
+  const bubble = btn.nextElementSibling;
+  const isVisible = bubble.classList.contains('visible');
+
+  // Close all others
+  document.querySelectorAll('.thought-bubble.visible').forEach(b => b.classList.remove('visible'));
+  document.querySelectorAll('.thought-btn.active').forEach(b => b.classList.remove('active'));
+
+  if (!isVisible) {
+    bubble.classList.add('visible');
+    btn.classList.add('active');
+
+    // Auto-close after 4s on mobile
+    setTimeout(() => {
+      bubble.classList.remove('visible');
+      btn.classList.remove('active');
+    }, 4000);
+  }
+}
+
+// Close thought bubble when tapping elsewhere
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('thought-btn')) {
+    document.querySelectorAll('.thought-bubble.visible').forEach(b => b.classList.remove('visible'));
+    document.querySelectorAll('.thought-btn.active').forEach(b => b.classList.remove('active'));
+  }
+});
+
+// DLC
+function toggleDLC() {
+  const c = document.getElementById('dlcContent');
+  c.classList.toggle('open');
+  document.querySelector('.dlc-btn').textContent = c.classList.contains('open')
+    ? '📦 Fechar DLC kkkkkk'
+    : '📦 DLC: Conteúdo Adicional do Relacionamento';
+}
+</script>
+</body>
+</html>
